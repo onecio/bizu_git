@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial: Subindo Projeto Local para o GitHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: rgba(255,255,255,0.07);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      border-radius: 18px;
+      padding: 40px 32px;
+      max-width: 700px;
+      width: 100%;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    h1, h2 {
+      color: #fff;
+      margin-top: 0;
+    }
+    code, pre {
+      background: #23272f;
+      color: #aeefff;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 1em;
+    }
+    pre {
+      display: block;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+    ol, ul {
+      margin-left: 1.2em;
+    }
+    .dica {
+      background: #1e293b;
+      color: #ffe066;
+      border-left: 4px solid #ffe066;
+      padding: 10px 16px;
+      border-radius: 6px;
+      margin: 18px 0;
+    }
+    a {
+      color: #7dd3fc;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Como Subir um Projeto Local para o GitHub (100% pelo Terminal)</h1>
+    <p>Este tutorial moderno e detalhado ensina como criar um repositório no GitHub e subir seu projeto local, sem precisar acessar o site do GitHub. Ideal para quem quer agilidade e automação!</p>
+    <h2>Pré-requisitos</h2>
+    <ul>
+      <li>Ter uma conta no <a href="https://github.com/" target="_blank">GitHub</a></li>
+      <li>Git instalado (<code>sudo apt install git</code>)</li>
+      <li>GitHub CLI instalado (<code>sudo apt install gh</code>)</li>
+    </ul>
+    <h2>Passo a Passo</h2>
+    <ol>
+      <li>
+        <strong>Abra o terminal na pasta do seu projeto</strong><br>
+        <code>cd /caminho/para/seu/projeto</code>
+      </li>
+      <li>
+        <strong>Inicialize o repositório Git (caso ainda não tenha):</strong><br>
+        <code>git init</code>
+      </li>
+      <li>
+        <strong>Adicione todos os arquivos e faça o primeiro commit:</strong><br>
+        <code>git add .</code><br>
+        <code>git commit -m "Primeiro commit"</code>
+      </li>
+      <li>
+        <strong>Faça login na GitHub CLI (apenas na primeira vez):</strong><br>
+        <code>gh auth login</code>
+        <div class="dica">
+          <strong>Dica:</strong> Quando aparecer a pergunta <em>"What account do you want to log into?"</em>, escolha <strong>GitHub.com</strong> usando as setas e pressione <strong>Enter</strong>.<br>
+          Siga as instruções na tela para autenticar pelo navegador.
+        </div>
+      </li>
+      <li>
+        <strong>Crie o repositório remoto e envie seu projeto automaticamente:</strong><br>
+        <code>gh repo create nome-do-repositorio --public --source=. --remote=origin --push</code><br>
+        <ul>
+          <li>Substitua <code>nome-do-repositorio</code> pelo nome desejado para o repositório.</li>
+          <li>Use <code>--private</code> se quiser um repositório privado.</li>
+        </ul>
+      </li>
+    </ol>
+    <h2>Pronto!</h2>
+    <p>Seu projeto já estará disponível no GitHub, com o repositório criado e o código enviado automaticamente.</p>
+    <div class="dica">
+      <strong>Dica Extra:</strong> Para cada alteração futura, basta rodar:<br>
+      <code>git add .</code><br>
+      <code>git commit -m "mensagem do commit"</code><br>
+      <code>git push</code>
+    </div>
+    <h2>Referências</h2>
+    <ul>
+      <li><a href="https://cli.github.com/manual/" target="_blank">Documentação oficial da GitHub CLI</a></li>
+      <li><a href="https://git-scm.com/doc" target="_blank">Documentação oficial do Git</a></li>
+    </ul>
+  </div>
+</body>
+</html>
