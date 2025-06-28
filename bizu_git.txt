@@ -1,0 +1,18 @@
+# Bizu Git - Comandos Essenciais
+
+git init                          # Inicializa repositório Git
+echo "Hello Git" > bizu_git.txt  # Cria um arquivo
+git status                        # Mostra status do repositório
+git add bizu_git.txt              # Adiciona arquivo ao staging
+git commit -m "msg"               # Comita com mensagem
+git log --oneline                 # Log resumido
+git checkout -b nome_branch       # Cria novo branch
+git branch                        # Lista branches
+git remote add origin URL         # Adiciona repositório remoto
+git push origin master            # Envia para o GitHub
+git pull origin master            # Puxa alterações
+git diff                          # Mostra diferenças não commitadas
+git reset --hard                  # ⚠️ Apaga alterações locais
+git tag v1.0                      # Cria uma tag
+git push origin --tags            # Envia tags para o remoto
+
