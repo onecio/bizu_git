@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guia Futurista: Do Local ao GitHub com CLI</title>
+  <title>Guia Completo de Git e GitHub: Do Básico ao Avançado</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
       --primary-color: #00ffff; /* Cyan */
       --secondary-color: #ff00ff; /* Magenta */
       --background-color: #0a0a1a;
-      --surface-color: rgba(10, 25, 47, 0.8);
+      --surface-color: rgba(10, 25, 47, 0.85);
       --text-color: #e6f1ff;
       --header-font: 'Orbitron', sans-serif;
       --body-font: 'Roboto', sans-serif;
@@ -22,8 +22,8 @@
       font-family: var(--body-font);
       background-color: var(--background-color);
       background-image: 
-        radial-gradient(circle at 15% 50%, rgba(0, 255, 255, 0.1), transparent 30%),
-        radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.1), transparent 30%);
+        radial-gradient(circle at 15% 50%, rgba(0, 255, 255, 0.1), transparent 35%),
+        radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.1), transparent 35%);
       color: var(--text-color);
       margin: 0;
       padding: 40px 0;
@@ -38,9 +38,9 @@
       border-radius: 20px;
       padding: 40px 50px;
       width: 80%;
-      max-width: 1200px;
+      max-width: 1400px;
       box-shadow: 0 0 40px rgba(0, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
 
     h1, h2, h3 {
@@ -51,15 +51,22 @@
     }
     
     h1 {
-        font-size: 3em;
+        font-size: 3.2em;
         text-align: center;
         margin-bottom: 1em;
+        letter-spacing: 2px;
     }
 
     h2 {
-        font-size: 2em;
+        font-size: 2.2em;
         border-bottom: 2px solid var(--primary-color);
-        padding-bottom: 0.3em;
+        padding-bottom: 0.4em;
+        margin-top: 2.5em;
+    }
+    
+    h3 {
+        font-size: 1.5em;
+        color: var(--secondary-color);
         margin-top: 2em;
     }
 
@@ -86,6 +93,8 @@
       overflow-x: auto;
       margin: 20px 0;
       box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
     
     pre code {
@@ -93,30 +102,8 @@
         padding: 0;
     }
 
-    .step {
-        background: rgba(255,255,255,0.05);
-        margin-bottom: 1.5em;
-        padding: 20px;
-        border-radius: 10px;
-        border-left: 5px solid var(--secondary-color);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .step:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-
-    .step strong {
-        font-size: 1.3em;
-        color: var(--text-color);
-        font-weight: 700;
-        display: block;
-        margin-bottom: 10px;
-    }
-
     .explanation {
-        font-size: 0.95em;
+        font-size: 1em;
         color: #a0c8e0;
         margin-top: 10px;
         margin-bottom: 15px;
@@ -135,79 +122,193 @@
       text-shadow: 0 0 8px var(--secondary-color);
     }
     
-    .prerequisites ul {
-        list-style: none;
-        padding: 0;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2em;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
     
-    .prerequisites li {
-        background: rgba(0,0,0,0.2);
-        padding: 10px 15px;
-        border-radius: 5px;
-        margin-bottom: 10px;
+    th, td {
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        padding: 15px;
+        text-align: left;
+    }
+    
+    th {
+        background-color: rgba(0, 255, 255, 0.1);
+        font-family: var(--header-font);
+        font-size: 1.2em;
+    }
+    
+    td code {
+        font-size: 0.95em;
+    }
+    
+    .workflow-list {
+        list-style: none;
+        padding-left: 0;
+        counter-reset: workflow-counter;
+    }
+    
+    .workflow-list li {
+        counter-increment: workflow-counter;
+        margin-bottom: 1em;
+        padding: 15px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+        position: relative;
+        padding-left: 50px;
+    }
+    
+    .workflow-list li::before {
+        content: counter(workflow-counter);
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: var(--secondary-color);
+        color: #fff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--header-font);
     }
 
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Guia Futurista: Do Local ao GitHub</h1>
-    <p>Bem-vindo ao futuro do controle de versão. Este guia detalhado mostra como levar seu projeto do seu ambiente de desenvolvimento local para um repositório no GitHub, tudo através da linha de comando (CLI). Uma habilidade essencial para o desenvolvedor moderno que busca eficiência e automação.</p>
+    <h1>Guia Definitivo de Git & GitHub</h1>
+    <p>Domine o controle de versão e a colaboração de código. Este guia foi projetado para ser um recurso completo, desde a configuração inicial até os fluxos de trabalho diários, útil tanto para iniciantes quanto para profissionais experientes.</p>
 
-    <h2>Pré-requisitos Essenciais</h2>
-    <div class="prerequisites">
-        <ul>
-            <li><strong>Conta no GitHub:</strong> Essencial. Se não tiver, crie uma em <a href="https://github.com/" target="_blank">github.com</a>.</li>
-            <li><strong>Git Instalado:</strong> O sistema de controle de versão. Verifique com <code>git --version</code>. Se não tiver, <a href="https://git-scm.com/downloads" target="_blank">baixe aqui</a>.</li>
-            <li><strong>GitHub CLI Instalada:</strong> A ferramenta que conecta seu terminal ao GitHub. Verifique com <code>gh --version</code>. Se não tiver, <a href="https://cli.github.com/" target="_blank">instale aqui</a>.</li>
-        </ul>
-    </div>
+    <h2>1. Configuração Inicial (Primeiros Passos)</h2>
+    <p class="explanation">Antes de começar a usar o Git, é crucial configurar sua identidade. Isso anexa seu nome e e-mail a cada commit que você fizer, identificando sua autoria no histórico do projeto. Este é um passo único na configuração de uma nova máquina.</p>
+    <pre><code>git config --global user.name "Seu Nome Completo"
+git config --global user.email "seu-email@exemplo.com"</code></pre>
 
-    <h2>O Plano de Voo: Passo a Passo</h2>
+    <h2>2. Do Zero à Nuvem: Criando e Enviando seu Primeiro Projeto</h2>
+    <p class="explanation">Vamos simular o fluxo completo: criar um projeto local, iniciar o controle de versão e publicá-lo em um novo repositório no GitHub. Usaremos a CLI do GitHub (gh) para agilizar o processo.</p>
     
-    <div class="step">
-      <strong>Passo 1: Navegue até a Raiz do seu Projeto</strong>
-      <p class="explanation">Abra seu terminal e use o comando <code>cd</code> (change directory) para entrar na pasta principal do seu projeto.</p>
-      <pre><code>cd /caminho/completo/para/seu/projeto</code></pre>
-    </div>
-
-    <div class="step">
-      <strong>Passo 2: Inicie o Controle de Versão com Git</strong>
-      <p class="explanation">Se o seu projeto ainda não é um repositório Git, este comando cria uma nova "sala de controle" (uma pasta oculta <code>.git</code>) para rastrear todas as suas alterações.</p>
-      <pre><code>git init</code></pre>
-    </div>
-
-    <div class="step">
-      <strong>Passo 3: Prepare e Registre sua Versão Inicial</strong>
-      <p class="explanation">Primeiro, adicione todos os arquivos ao "stage" (área de preparação) com <code>git add .</code>. Em seguida, "tire uma foto" do estado atual do seu projeto com <code>git commit</code>, adicionando uma mensagem que descreva essa versão.</p>
-      <pre><code>git add .
-git commit -m "Commit inicial: Estrutura do projeto"</code></pre>
-    </div>
-
-    <div class="step">
-      <strong>Passo 4: Autentique-se no GitHub via CLI</strong>
-      <p class="explanation">Este é um passo único. Você vai conectar seu terminal à sua conta do GitHub de forma segura. O terminal irá te guiar para autenticar através do navegador.</p>
-      <pre><code>gh auth login</code></pre>
-    </div>
-
-    <div class="step">
-      <strong>Passo 5: Crie o Repositório Remoto e Envie seu Código</strong>
-      <p class="explanation">A mágica acontece aqui. O comando <code>gh repo create</code> vai criar um novo repositório no seu GitHub e, com as flags adicionais, já vai configurar o link remoto e enviar (push) seu código para lá.</p>
-      <pre><code>gh repo create nome-do-seu-repositorio --public --source=. --remote=origin --push</code></pre>
-      <ul>
-          <li>Substitua <code>nome-do-seu-repositorio</code> pelo nome que desejar.</li>
-          <li>Use <code>--private</code> em vez de <code>--public</code> para um repositório privado.</li>
-      </ul>
-    </div>
-
-    <h2>Missão Cumprida! E Agora?</h2>
-    <p>Seu código agora vive no GitHub! Para futuras atualizações, o processo é mais simples:</p>
-    <ol>
-        <li>Faça suas alterações no código.</li>
-        <li>Adicione as alterações: <code>git add .</code></li>
-        <li>Faça o commit: <code>git commit -m "Descreva suas alterações"</code></li>
-        <li>Envie para o GitHub: <code>git push</code></li>
+    <h3>Passo a Passo:</h3>
+    <ol class="workflow-list">
+        <li><strong>Crie e acesse o diretório do projeto:</strong><br>
+            <pre><code>mkdir meu-projeto-incrivel
+cd meu-projeto-incrivel</code></pre>
+        </li>
+        <li><strong>Inicialize o Git:</strong><br>
+            Isso cria um repositório local (uma pasta <code>.git</code>) para rastrear as mudanças.<br>
+            <pre><code>git init</code></pre>
+        </li>
+        <li><strong>Crie um arquivo e faça o primeiro commit:</strong><br>
+            Adicione um arquivo de exemplo, prepare-o (<code>add</code>) e salve um snapshot (<code>commit</code>).<br>
+            <pre><code>echo "# Meu Projeto Incrível" > README.md
+git add .
+git commit -m "Primeiro commit: Adiciona README inicial"</code></pre>
+        </li>
+        <li><strong>Autentique-se no GitHub:</strong><br>
+            Se for a primeira vez, conecte seu terminal à sua conta do GitHub.<br>
+            <pre><code>gh auth login</code></pre>
+        </li>
+        <li><strong>Crie o repositório no GitHub e envie o código:</strong><br>
+            Este comando cria o repositório remoto, o conecta ao seu projeto local e envia seus commits.<br>
+            <pre><code>gh repo create nome-do-repositorio --public --source=. --remote=origin --push</code></pre>
+        </li>
     </ol>
+
+    <h2>3. Comandos Essenciais para o Dia a Dia</h2>
+    <p class="explanation">Esta tabela resume os comandos que você mais usará. Entendê-los bem é a chave para um fluxo de trabalho produtivo.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Comando</th>
+                <th>O que faz</th>
+                <th>Exemplo de Uso Comum</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>git status</code></td>
+                <td>Mostra o estado atual do seu repositório: arquivos modificados, novos ou preparados para commit.</td>
+                <td><code>git status</code></td>
+            </tr>
+            <tr>
+                <td><code>git add</code></td>
+                <td>Adiciona arquivos modificados à "área de preparação" (staging), marcando-os para o próximo commit.</td>
+                <td><code>git add .</code> (adiciona tudo) ou <code>git add nome-do-arquivo.js</code></td>
+            </tr>
+            <tr>
+                <td><code>git commit -m "msg"</code></td>
+                <td>Salva as alterações preparadas no histórico local com uma mensagem descritiva.</td>
+                <td><code>git commit -m "feat: Adiciona nova funcionalidade de login"</code></td>
+            </tr>
+            <tr>
+                <td><code>git push</code></td>
+                <td>Envia seus commits locais para o repositório remoto no GitHub.</td>
+                <td><code>git push origin main</code></td>
+            </tr>
+            <tr>
+                <td><code>git pull</code></td>
+                <td>Busca e mescla as alterações do repositório remoto para o seu ambiente local. Essencial antes de começar a trabalhar.</td>
+                <td><code>git pull origin main</code></td>
+            </tr>
+            <tr>
+                <td><code>git branch</code></td>
+                <td>Lista, cria ou deleta branches (ramos). Branches permitem desenvolver funcionalidades isoladamente.</td>
+                <td><code>git branch nova-feature</code> (cria) / <code>git branch</code> (lista)</td>
+            </tr>
+            <tr>
+                <td><code>git checkout</code></td>
+                <td>Muda para um branch existente ou cria um novo e já muda para ele.</td>
+                <td><code>git checkout -b nova-feature</code></td>
+            </tr>
+            <tr>
+                <td><code>git merge</code></td>
+                <td>Incorpora as alterações de um branch em outro (ex: da sua feature para o branch principal).</td>
+                <td><code>git checkout main</code> -> <code>git merge nova-feature</code></td>
+            </tr>
+            <tr>
+                <td><code>git log</code></td>
+                <td>Exibe o histórico de commits do projeto.</td>
+                <td><code>git log --oneline --graph</code></td>
+            </tr>
+            <tr>
+                <td><code>git stash</code></td>
+                <td>Guarda temporariamente as modificações que ainda não estão prontas para um commit, limpando sua área de trabalho.</td>
+                <td><code>git stash</code> (guarda) / <code>git stash pop</code> (aplica de volta)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Fluxo de Trabalho Diário Recomendado</h2>
+    <p class="explanation">Siga estes passos para manter seu trabalho sincronizado e evitar conflitos com outros desenvolvedores.</p>
+    <ol class="workflow-list">
+        <li><strong>Sincronize:</strong> Sempre comece seu dia (ou tarefa) atualizando seu projeto local com <code>git pull</code>.</li>
+        <li><strong>Trabalhe:</strong> Crie/edite seus arquivos, implementando novas funcionalidades ou corrigindo bugs.</li>
+        <li><strong>Prepare:</strong> Use <code>git add .</code> para preparar todas as suas alterações para o commit.</li>
+        <li><strong>Salve:</strong> Faça o commit das alterações com uma mensagem clara: <code>git commit -m "Sua mensagem"</code>.</li>
+        <li><strong>Envie:</strong> Compartilhe seu trabalho com a equipe enviando para o GitHub com <code>git push</code>.</li>
+    </ol>
+
+    <h2>5. Extras Úteis para Turbinar seu Workflow</h2>
+    
+    <h3>Clonando um Projeto Existente</h3>
+    <p class="explanation">Para trabalhar em um projeto que já existe no GitHub, você precisa criar uma cópia local dele. Isso é feito com o comando <code>git clone</code>.</p>
+    <pre><code># Copie a URL do repositório no GitHub (botão "Code")
+git clone https://github.com/usuario/nome-do-repositorio.git</code></pre>
+
+    <h3>Criando Atalhos (Aliases) para Comandos</h3>
+    <p class="explanation">Se você usa certos comandos com frequência, pode criar atalhos (aliases) para eles no seu terminal, economizando tempo e digitação. A configuração depende do seu shell (Bash, Zsh, etc.), mas geralmente é feita no arquivo <code>.bashrc</code> ou <code>.zshrc</code>.</p>
+    <pre><code># Exemplo de aliases que você pode adicionar ao seu .bashrc ou .zshrc
+alias gs="git status"
+alias ga="git add ."
+alias gc="git commit -m"
+alias gp="git push"
+alias gl="git pull"</code></pre>
+    <p>Após adicionar, reinicie o terminal ou rode <code>source ~/.bashrc</code>. Agora, você pode simplesmente digitar <code>gs</code> em vez de <code>git status</code>.</p>
 
   </div>
 </body>
